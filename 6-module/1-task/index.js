@@ -14,7 +14,6 @@
  */
 
 function TableComponentTemplate(items) {
-  let table = document.createElement("table");
   let result = `
   <thead>
       <tr>
@@ -35,29 +34,43 @@ function TableComponentTemplate(items) {
     <td>${item.city}</td>
     <td><button>X</button></td>
     </tr>`).join('')}
+         
       </tr>
+
       </tbody>
   `;
-  table.innerHTML = result;
-  
-  const removeButton = Array.from(table.querySelectorAll('button'));
-  
-  removeButton.forEach((btn)=> {
-    btn.onclick = function(event) {
-      let target = event.target;
 
-      target.parentNode.parentNode.remove();
-      console.log(target.parentNode);
-    };
-  });
-  
-  return table;
+ 
+  return result;
 }
 export default class UserTable {
   #elem = '';
+  #template = null;
   constructor(rows) {
-    this.#elem = new TableComponentTemplate(rows);
+    this.#template = TableComponentTemplate(rows);
+    this.#elem = this.render();
   }
+  render () {
+    
+    let table = document.createElement("table");
+    table.innerHTML = this.#template;
+    
+    const removeButton = Array.from(table.querySelectorAll('button'));
+  
+    removeButton.forEach((btn)=> {
+      btn.onclick = function(event) {
+        let target = event.target;
+
+        target.closest('tr').remove();
+      }, { once: true };
+    });
+    
+    return table;
+    
+    
+  }
+  
+  
  
   get elem() {
     return this.#elem;

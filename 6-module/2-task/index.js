@@ -1,7 +1,7 @@
 import createElement from '../../assets/lib/create-element.js';
 
 function ProductCardTemplate(product) {
-  const productCard = createElement(`<div class="card">
+  const productCard = `<div class="card">
   <div class="card__top">
       <img src="/assets/images/products/${product.image}" class="card__image" alt="product">
       <span class="card__price">€${product.price.toFixed(2)}</span>
@@ -12,29 +12,36 @@ function ProductCardTemplate(product) {
           <img src="/assets/images/icons/plus-icon.svg" alt="icon">
       </button>
   </div>
-</div>`);
-
-  const addButton = productCard.querySelector('.card__button');
-  
-  addButton.onclick = function() {
-    const productCardEvent = new CustomEvent("product-add", 
-      { detail: product.id,
-        bubbles: true});
-
-    productCard.dispatchEvent(productCardEvent);
-    console.log(productCardEvent);
-  };
-
+</div>`;
   
   return productCard;
 }
 
 export default class ProductCard {
   #elem = '';
+  #template = null;
+  #productId = null;
   constructor(product) {
-    this.#elem = ProductCardTemplate(product);
+    this.#productId = product.id;
+    this.#template = ProductCardTemplate(product);
+    this.#elem = this.render();
+    
   }
 
+  render() {
+    let productCard = createElement(this.#template);
+    const addButton = productCard.querySelector('.card__button');
+    const productId = this.#productId;
+  
+    addButton.onclick = function() {
+      const productCardEvent = new CustomEvent("product-add", 
+        { detail: productId,
+          bubbles: true});
+
+      productCard.dispatchEvent(productCardEvent);
+    };
+    return productCard;
+  }
 
   get elem() {
     return this.#elem;
