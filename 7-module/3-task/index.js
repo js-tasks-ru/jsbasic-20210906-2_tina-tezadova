@@ -46,9 +46,9 @@ export default class StepSlider {
       let valuePercents = value / segments * 100;
       const sliderValueContainer = slider.querySelector('.slider__value');
       let activeStep = stepsContainer.childNodes[1];
-      console.log(activeStep);
+      
   
-      sliderValueContainer.append(value);
+      sliderValueContainer.innerHTML = value;
       
       activeStep.classList.add('slider__step-active');
   
@@ -56,10 +56,9 @@ export default class StepSlider {
       let progress = slider.querySelector('.slider__progress');
       thumb.style.left = `${valuePercents}%`;
       progress.style.width = `${valuePercents}%`;
-      console.log('click');
   
   
-      this.onSliderClick(value);
+      this.onSliderClickEvent(value);
   
     });
 
@@ -70,7 +69,7 @@ export default class StepSlider {
   }
 
 
-  onSliderClick = (value) => {
+  onSliderClickEvent = (value) => {
     const sliderChangeEvent = new CustomEvent("slider-change", 
       { detail: value,
         bubbles: true});
