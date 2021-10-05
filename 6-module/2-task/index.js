@@ -28,19 +28,25 @@ export default class ProductCard {
     
   }
 
+  
+
   render() {
     let productCard = createElement(this.#template);
     const addButton = productCard.querySelector('.card__button');
-    const productId = this.#productId;
+    
   
-    addButton.onclick = function() {
-      const productCardEvent = new CustomEvent("product-add", 
-        { detail: productId,
-          bubbles: true});
-
-      productCard.dispatchEvent(productCardEvent);
-    };
+    addButton.onclick = this.onAddButtonClick;
     return productCard;
+  }
+
+  onAddButtonClick = () => {
+    const productId = this.#productId;
+    const productCardEvent = new CustomEvent("product-add", 
+      { detail: productId,
+        bubbles: true});
+
+    return this.#elem.dispatchEvent(productCardEvent);
+     
   }
 
   get elem() {

@@ -29,7 +29,6 @@ function initCarousel() {
     hidden();
     carouselInner.style.transform = `translateX(-${currentWidth + slideWidth}px)`;
     currentWidth += slideWidth;
-
   });
 
   carouselArrowLeft.addEventListener('click', () => {

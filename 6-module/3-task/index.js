@@ -32,6 +32,7 @@ export default class Carousel {
   #elem = '';
   #template = '';
 
+
   constructor(slides) {
     this.#template = CarouselTemplate(slides);
     this.#elem = this.render();
@@ -64,8 +65,8 @@ export default class Carousel {
       
     });
     
-
-    const hidden = function () {
+     
+    /* const hidden = function () {
       if (step === carouselInner.children.length) {
         carouselArrowRight.style.display = 'none';
       } else {
@@ -76,39 +77,55 @@ export default class Carousel {
       } else {
         carouselArrowLeft.style.display = 'none';
       }
-    };
+    };  */
+      
+    
+      
+    this.hidden(carouselArrowRight, carouselArrowLeft, carouselInner, step);
+
       
       
-    hidden();
-    setTimeout(() => {
+    let currentWidth = 0;
       
+    carouselArrowRight.addEventListener('click', () => {
       const slideWidth = carouselSlide.offsetWidth;
-      let currentWidth = 0;
-      
-      carouselArrowRight.addEventListener('click', () => {
-        step += 1;
-        hidden();
-        carouselInner.style.transform = `translateX(-${currentWidth + slideWidth}px)`;
-        currentWidth += slideWidth;
-        
+      step += 1;
+      this.hidden(carouselArrowRight, carouselArrowLeft, carouselInner, step);
+      carouselInner.style.transform = `translateX(-${currentWidth + slideWidth}px)`;
+      currentWidth += slideWidth;
     
-      });
+    });
     
-      carouselArrowLeft.addEventListener('click', () => {
-        step -= 1;
-        hidden();
-        carouselInner.style.transform = `translateX(-${currentWidth - slideWidth}px)`;
-        currentWidth -= slideWidth;
+    carouselArrowLeft.addEventListener('click', () => {
+      const slideWidth = carouselSlide.offsetWidth;
+      step -= 1;
+      this.hidden(carouselArrowRight, carouselArrowLeft, carouselInner, step);
+      carouselInner.style.transform = `translateX(-${currentWidth - slideWidth}px)`;
+      currentWidth -= slideWidth;
         
-      });
+    });
   
-  
-    }, 1);
+
     return productCarousel;
   }
 
 
-  get elem() {
-    return this.#elem;
-  }
+ hidden = (carouselArrowRight, carouselArrowLeft, carouselInner, step) => {
+
+   if (step === carouselInner.children.length) {
+     carouselArrowRight.style.display = 'none';
+   } else {
+     carouselArrowRight.style.display = '';
+   }
+   if (step > 1) {
+     carouselArrowLeft.style.display = '';
+   } else {
+     carouselArrowLeft.style.display = 'none';
+   }
+ }; 
+
+
+ get elem() {
+   return this.#elem;
+ }
 }
