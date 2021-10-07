@@ -42,58 +42,66 @@ export default class StepSlider {
 
     thumb.addEventListener('pointerdown', () => {
       slider.classList.add('slider_dragging');
-      let value = 0;
-      
-      const onMove = (event) => {
-        let left = event.clientX - slider.getBoundingClientRect().left;
-        let leftRelative = left / slider.offsetWidth;
-        let leftPercents = leftRelative * 100;
-        let thumb = slider.querySelector('.slider__thumb');
-        let progress = slider.querySelector('.slider__progress');
-        let segments = this.#steps - 1;
-        let approximateValue = leftRelative * segments;
-        const sliderValueContainer = slider.querySelector('.slider__value');
-        let activeStep = stepsContainer.childNodes[1];
-        value = Math.round(approximateValue);
-        
-        if (leftRelative < 0) {
-          leftRelative = 0;
-        }
-        
-        if (leftRelative > 1) {
-          leftRelative = 1;
-        }
-        
-        
-        
-        thumb.style.left = `${leftPercents}%`;
-        progress.style.width = `${leftPercents}%`;
-        sliderValueContainer.innerHTML = value;
-        activeStep.classList.add('slider__step-active');
 
-      };
-
-      
-
-
-      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointermove', this.onPointerMove);
   
-      document.addEventListener('pointerup', () => {
-        this.onSliderClickEvent(value);
-        slider.classList.remove('slider_dragging');
-        document.removeEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', (event) => {
+        let value = this.pointerMoveValue(event);
+        this.onPointerUp(value);
       }, { once: true });
       
     });
 
-
     slider.addEventListener('click', (event)=> {
       this.onSlideClick(event, stepsContainer);
-  
     });
-    
     return slider;
+  }
 
+  pointerMoveValue = (event) => {
+    let value = 0;
+    const slider = this.#elem;
+    let left = event.clientX - slider.getBoundingClientRect().left;
+    let leftRelative = left / slider.offsetWidth;
+    let segments = this.#steps - 1;
+    let approximateValue = leftRelative * segments;
+    value = Math.round(approximateValue);
+
+    return value;
+  }
+
+  onPointerMove = (event) => {
+    const slider = this.#elem;
+    const stepsContainer = slider.querySelector('.slider__steps');
+    let value = this.pointerMoveValue(event);
+    let left = event.clientX - slider.getBoundingClientRect().left;
+    let leftRelative = left / slider.offsetWidth;
+    let leftPercents = leftRelative * 100;
+    let thumb = slider.querySelector('.slider__thumb');
+    let progress = slider.querySelector('.slider__progress');
+    const sliderValueContainer = slider.querySelector('.slider__value');
+    let activeStep = stepsContainer.childNodes[1];
+    
+    if (leftRelative < 0) {
+      leftRelative = 0;
+    }
+    
+    if (leftRelative > 1) {
+      leftRelative = 1;
+    }
+    
+    
+    
+    thumb.style.left = `${leftPercents}%`;
+    progress.style.width = `${leftPercents}%`;
+    sliderValueContainer.innerHTML = value;
+    activeStep.classList.add('slider__step-active');
+  }
+
+  onPointerUp = (value) => {
+    this.onSliderClickEvent(value);
+    this.#elem.classList.remove('slider_dragging');
+    document.removeEventListener('pointermove', this.onPointerMove);
   }
 
 
@@ -106,12 +114,8 @@ export default class StepSlider {
   }
 
   onSlideClick = (event, stepsContainer) => {
-
-    let left = event.clientX - this.#elem.getBoundingClientRect().left;
-    let leftRelative = left / this.#elem.offsetWidth;
     let segments = this.#steps - 1;
-    let approximateValue = leftRelative * segments;
-    let value = Math.round(approximateValue);
+    let value = this.pointerMoveValue(event);
     let valuePercents = value / segments * 100;
     const sliderValueContainer = this.#elem.querySelector('.slider__value');
     let activeStep = stepsContainer.childNodes[1];

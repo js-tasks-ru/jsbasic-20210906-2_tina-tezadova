@@ -19,10 +19,10 @@ function ModalTemplate() {
 }
 export default class Modal {
   #template = '';
-  #render = '';
+  #container = '';
   constructor() {
     this.#template = ModalTemplate();
-    this.#render = this.render();
+    this.#container = this.render();
 
   }
 
@@ -45,14 +45,14 @@ export default class Modal {
   }
 
   setTitle(title) {
-    let modalTitle = this.#render.querySelector('.modal__title');
+    let modalTitle = this.#container.querySelector('.modal__title');
     modalTitle.append(title);
     return modalTitle;
 
   }
 
   setBody(body) {
-    let modalBody = this.#render.querySelector('.modal__body');
+    let modalBody = this.#container.querySelector('.modal__body');
     modalBody.append(body);
     return modalBody;
   }
@@ -61,8 +61,7 @@ export default class Modal {
    
     const body = document.querySelector('body');
     body.classList.add('is-modal-open');
-    document.body.append(this.#render);
-    console.log(body.childNodes);
+    document.body.append(this.#container);
   }
 
 

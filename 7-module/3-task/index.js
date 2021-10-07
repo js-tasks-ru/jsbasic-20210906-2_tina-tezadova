@@ -28,6 +28,7 @@ export default class StepSlider {
   render() {
     const slider = createElement(this.#template);
     const stepsContainer = slider.querySelector('.slider__steps');
+    
     const span = '<span></span>';
 
     
@@ -37,30 +38,7 @@ export default class StepSlider {
     }
     
     
-    slider.addEventListener('click', (event)=> {
-      let left = event.clientX - slider.getBoundingClientRect().left;
-      let leftRelative = left / slider.offsetWidth;
-      let segments = this.#steps - 1;
-      let approximateValue = leftRelative * segments;
-      let value = Math.round(approximateValue);
-      let valuePercents = value / segments * 100;
-      const sliderValueContainer = slider.querySelector('.slider__value');
-      let activeStep = stepsContainer.childNodes[1];
-      
-  
-      sliderValueContainer.innerHTML = value;
-      
-      activeStep.classList.add('slider__step-active');
-  
-      let thumb = slider.querySelector('.slider__thumb');
-      let progress = slider.querySelector('.slider__progress');
-      thumb.style.left = `${valuePercents}%`;
-      progress.style.width = `${valuePercents}%`;
-  
-  
-      this.onSliderClickEvent(value);
-  
-    });
+    slider.addEventListener('click', (event)=> { this.onSliderClickEvent(event);});
 
     
     
@@ -69,12 +47,33 @@ export default class StepSlider {
   }
 
 
-  onSliderClickEvent = (value) => {
+  onSliderClickEvent = (event) => {
+    const slider = this.#elem;
+    const stepsContainer = slider.querySelector('.slider__steps');
+    let left = event.clientX - slider.getBoundingClientRect().left;
+    let leftRelative = left / slider.offsetWidth;
+    let segments = this.#steps - 1;
+    let approximateValue = leftRelative * segments;
+    let value = Math.round(approximateValue);
+    let valuePercents = value / segments * 100;
+    const sliderValueContainer = slider.querySelector('.slider__value');
+    let activeStep = stepsContainer.childNodes[1];
+      
+  
+    sliderValueContainer.innerHTML = value;
+      
+    activeStep.classList.add('slider__step-active');
+  
+    let thumb = slider.querySelector('.slider__thumb');
+    let progress = slider.querySelector('.slider__progress');
+    thumb.style.left = `${valuePercents}%`;
+    progress.style.width = `${valuePercents}%`;
+
     const sliderChangeEvent = new CustomEvent("slider-change", 
       { detail: value,
         bubbles: true});
   
-    return this.#elem.dispatchEvent(sliderChangeEvent);
+    return slider.dispatchEvent(sliderChangeEvent);
      
   }
 
