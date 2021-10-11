@@ -53,7 +53,6 @@ export default class ProductGrid {
     Object.keys(filters)
   .forEach(function eachKey(key) { 
     activeFilters[key] = filters[key];
-    console.log(activeFilters);
   });
 
     if (activeFilters.noNuts) {

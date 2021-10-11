@@ -167,7 +167,6 @@ export default class Cart {
 
   onProductUpdate(cartItem) {
     let isModalOpen = document.querySelector('.is-modal-open');
-    //console.log(document.body.querySelector('.cart-buttons__button'));
 
 
     if (isModalOpen) {

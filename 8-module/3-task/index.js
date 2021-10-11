@@ -1,5 +1,6 @@
 export default class Cart {
   cartItems = []; // [product: {...}, count: N]
+  cartItem = {};
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
@@ -12,19 +13,24 @@ export default class Cart {
         this.cartItems.map((item) => {
           if (item.product.id === ittem.product.id) {
             item.count += 1;
+            this.cartItem = item;
           }
         });
       } else {
-        this.cartItems.push({
+
+
+        this.cartItem = {
           product: product,
           count: 1
-        });
+        };
+
+        this.cartItems.push(this.cartItem);
       }
     } else {
       return;
     }
-    
-    
+
+
 
     this.onProductUpdate(this.cartItem);
   }
@@ -33,13 +39,14 @@ export default class Cart {
     this.cartItems.map((item => {
       if (item.product.id === productId) {
         item.count += amount;
+        this.cartItem = item;
         if (item.count === 0) {
-          this.cartItems = this.cartItems.filter((item)=> item.product.id !== productId);
+          this.cartItems = this.cartItems.filter((item) => item.product.id !== productId);
         }
       }
     }));
 
-    
+
     this.onProductUpdate(this.cartItem);
   }
 

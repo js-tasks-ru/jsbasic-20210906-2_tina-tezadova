@@ -52,7 +52,6 @@ export default class CartIcon {
           document.documentElement.clientWidth - this.elem.offsetWidth - 10
         ) + 'px';
   
-        console.log(getComputedStyle(this.elem).position);
         
   
   
@@ -69,7 +68,7 @@ export default class CartIcon {
           top: '',
           left: '',
           zIndex: '',
-          //right: ''
+         
   
         });
       }
@@ -81,7 +80,7 @@ export default class CartIcon {
         top: '',
         left: '',
         zIndex: '',
-        //right: ''
+        
       });
     }
 
