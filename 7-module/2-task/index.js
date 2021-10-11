@@ -7,8 +7,7 @@ function ModalTemplate() {
       <button type="button" class="modal__close">
         <img src="/assets/images/icons/cross-icon.svg" alt="close-icon" />
       </button>
-      <h3 class="modal__title">
-      </h3>
+      <h3 class="modal__title"></h3>
     </div>
     <div class="modal__body">
     </div>

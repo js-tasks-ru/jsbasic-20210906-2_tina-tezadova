@@ -1,8 +1,10 @@
 import createElement from '../../assets/lib/create-element.js';
 
 export default class CartIcon {
+  initialTopCoord = '';
   constructor() {
     this.render();
+    this.initialTopCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
 
     this.addEventListeners();
   }
@@ -39,6 +41,49 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    // ваш код ...
+
+    
+
+    if (document.documentElement.clientWidth > 767) {
+      if (window.pageYOffset > this.initialTopCoord) {
+      
+        let leftIndent = Math.min(
+          document.querySelector('.container').getBoundingClientRect().right + 20,
+          document.documentElement.clientWidth - this.elem.offsetWidth - 10
+        ) + 'px';
+  
+        console.log(getComputedStyle(this.elem).position);
+        
+  
+  
+        Object.assign(this.elem.style, {
+          position: 'fixed',
+          top: '50px',
+          zIndex: 1e3,
+          right: '10px',
+          left: leftIndent
+        });
+      } else {
+        Object.assign(this.elem.style, {
+          position: '',
+          top: '',
+          left: '',
+          zIndex: '',
+          //right: ''
+  
+        });
+      }
+
+      
+    } else {
+      Object.assign(this.elem.style, {
+        position: '',
+        top: '',
+        left: '',
+        zIndex: '',
+        //right: ''
+      });
+    }
+
   }
 }
