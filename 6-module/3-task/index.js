@@ -59,25 +59,11 @@ export default class Carousel {
             bubbles: true});
 
         productCarousel.dispatchEvent(addCarouselButtonEvent);
-        console.log(addCarouselButtonEvent);
 
       });
       
     });
     
-     
-    /* const hidden = function () {
-      if (step === carouselInner.children.length) {
-        carouselArrowRight.style.display = 'none';
-      } else {
-        carouselArrowRight.style.display = '';
-      }
-      if (step > 1) {
-        carouselArrowLeft.style.display = '';
-      } else {
-        carouselArrowLeft.style.display = 'none';
-      }
-    };  */
       
     
       

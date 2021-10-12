@@ -16,6 +16,7 @@ export default class ProductGrid {
   #template = '';
   #elem = '';
   #productsFiltred = '';
+  #container = '';
   #activeFilters = {
     noNuts: false,
     vegeterianOnly: false,
@@ -32,19 +33,24 @@ export default class ProductGrid {
 
   render(products) {
     const productGrid = createElement(this.#template);
-    const container = productGrid.querySelector('.products-grid__inner');
-    products.map((product) => {
-      const card = new ProductCard(product);
-      container.append(card.elem);
-    });
+    this.#container = productGrid.querySelector('.products-grid__inner');
+    this.createProductElements(products);
+
 
 
     return productGrid;
   }
 
+  createProductElements(products) {
+    
+    products.map((product) => {
+      const card = new ProductCard(product);
+      this.#container.append(card.elem);
+    });
+
+  }
+
   updateFilter(filters) {
-    const container = document.querySelector('#container');
-    let newRender = null;
     this.#productsFiltred = this.products;
     const activeFilters = this.#activeFilters;
 
@@ -56,7 +62,7 @@ export default class ProductGrid {
   });
 
     if (activeFilters.noNuts) {
-      this.#productsFiltred = this.#productsFiltred.filter((product) => product.nuts === true);
+      this.#productsFiltred = this.#productsFiltred.filter((product) => product.nuts === false || product.nuts === undefined);
       
     }
 
@@ -72,12 +78,9 @@ export default class ProductGrid {
       this.#productsFiltred = this.#productsFiltred.filter((product) => product.category === activeFilters.category);
     }
 
-    newRender = this.render(this.#productsFiltred);
-    container.removeChild(container.firstChild);
-    container.append(newRender);
-    
 
-
+    this.#container.innerHTML = '';
+    this.createProductElements(this.#productsFiltred);
   }
 
 
