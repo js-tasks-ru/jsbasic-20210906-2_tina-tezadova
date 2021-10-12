@@ -19,8 +19,10 @@ export default class StepSlider {
   #steps = 0;
   #template = '';
   #elem = '';
+  #value = null;
   constructor({ steps, value = 0 }) {
     this.#steps = steps;
+    this.#value = value;
     this.#template = StepSliderTemplate(value);
     this.#elem = this.render();
   }
@@ -29,6 +31,15 @@ export default class StepSlider {
     const slider = createElement(this.#template);
     const stepsContainer = slider.querySelector('.slider__steps');
     const span = '<span></span>';
+    let segments = this.#steps - 1;
+    let valuePercents = this.#value / segments * 100;
+    let thumb = slider.querySelector('.slider__thumb');
+    let progress = slider.querySelector('.slider__progress');
+    
+    thumb.style.left = `${valuePercents}%`;
+    progress.style.width = `${valuePercents}%`;
+
+    
     
 
     
@@ -37,7 +48,7 @@ export default class StepSlider {
       
     }
     
-    let thumb = slider.querySelector('.slider__thumb');
+    
     thumb.ondragstart = () => false;
 
     thumb.addEventListener('pointerdown', () => {
@@ -129,8 +140,6 @@ export default class StepSlider {
     let progress = this.#elem.querySelector('.slider__progress');
     thumb.style.left = `${valuePercents}%`;
     progress.style.width = `${valuePercents}%`;
-  
-  
     this.onSliderClickEvent(value);
 
   }
