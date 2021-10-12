@@ -52,6 +52,13 @@ export default class Cart {
         this.cartItem = item;
         if (item.count === 0) {
           this.cartItems = this.cartItems.filter((item) => item.product.id !== productId);
+          let cartElems = Array.from(document.body.querySelectorAll('[data-product-id]'));
+          cartElems.map((e)=> {
+            if (e.getAttribute('data-product-id') === item.product.id) {
+              e.remove();
+            }
+          });
+          
         }
       }
     }));
@@ -142,17 +149,25 @@ export default class Cart {
     cart.append(this.renderOrderForm());
 
     this.modal.setBody(cart);
-    const buttonMinus = cart.querySelector('.cart-counter__button_minus');
-    const buttonPlus = cart.querySelector('.cart-counter__button_plus');
-    buttonMinus.onclick = ({ target }) => {
-      const productId = target.closest('div[data-product-id]').getAttribute('data-product-id');
-      this.updateProductCount(productId, -1);
-    };
+    const buttonMinus = Array.from(cart.querySelectorAll('.cart-counter__button_minus'));
+    const buttonPlus = Array.from(cart.querySelectorAll('.cart-counter__button_plus'));
 
-    buttonPlus.onclick = ({ target }) => {
-      const productId = target.closest('div[data-product-id]').getAttribute('data-product-id');
-      this.updateProductCount(productId, 1);
-    };
+    buttonMinus.map((button)=> {
+      button.onclick = ({ target }) => {
+        const productId = target.closest('div[data-product-id]').getAttribute('data-product-id');
+        this.updateProductCount(productId, -1);
+      };
+    });
+   
+
+    buttonPlus.map((button)=> {
+      button.onclick = ({ target }) => {
+        const productId = target.closest('div[data-product-id]').getAttribute('data-product-id');
+        this.updateProductCount(productId, 1);
+      };
+    });
+
+
 
     const form = cart.querySelector('.cart-form');
     form.addEventListener('submit', (event) => this.onSubmit(event));
@@ -170,17 +185,21 @@ export default class Cart {
 
 
     if (isModalOpen) {
-      if (this.cartItems.length > 0 && cartItem.count > 0) {
-        let productId = cartItem.product.id;
-        let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
-        let productPrice = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
-        let infoPrice = this.modalBody.querySelector(`.cart-buttons__info-price`);
+      let cartItemsIsEmpty = this.isEmpty();
+      if (!cartItemsIsEmpty) {
+        if (cartItem.count > 0) {
+          let productId = cartItem.product.id;
+          let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+          let productPrice = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+          let infoPrice = this.modalBody.querySelector(`.cart-buttons__info-price`);
 
-        productCount.innerHTML = cartItem.count;
+          productCount.innerHTML = cartItem.count;
 
-        productPrice.innerHTML = `€${(cartItem.product.price * cartItem.count).toFixed(2)}`;
+          productPrice.innerHTML = `€${(cartItem.product.price * cartItem.count).toFixed(2)}`;
 
-        infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
+          infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
+          console.log('length' + this.cartItems.length);
+        }
       } else {
         this.modal.close();
       }
