@@ -1,10 +1,10 @@
 import createElement from '../../assets/lib/create-element.js';
 
 export default class CartIcon {
-  initialTopCoord = '';
+  initialTopCoord = null;
   constructor() {
     this.render();
-    this.initialTopCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
+    this.initialTopCoord = null;
 
     this.addEventListeners();
   }
@@ -41,7 +41,9 @@ export default class CartIcon {
   }
 
   updatePosition() {
-
+    if (!this.initialTopCoord) {
+      this.initialTopCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
+    }
     
 
     if (document.documentElement.clientWidth > 767) {
@@ -64,7 +66,7 @@ export default class CartIcon {
         });
       } else {
         Object.assign(this.elem.style, {
-          position: '',
+          position: 'absolute',
           top: '',
           left: '',
           zIndex: '',

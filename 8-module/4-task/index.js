@@ -6,8 +6,7 @@ import Modal from '../../7-module/2-task/index.js';
 export default class Cart {
   cartItems = []; // [product: {...}, count: N]
   cartItem = {};
-  modal = null
-  modalBody = '';
+  modal = null;
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
@@ -173,7 +172,6 @@ export default class Cart {
     form.addEventListener('submit', (event) => this.onSubmit(event));
 
     this.modal.open();
-    this.modalBody = document.body.querySelector('.modal__body');
 
 
   }
@@ -189,16 +187,15 @@ export default class Cart {
       if (!cartItemsIsEmpty) {
         if (cartItem.count > 0) {
           let productId = cartItem.product.id;
-          let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
-          let productPrice = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
-          let infoPrice = this.modalBody.querySelector(`.cart-buttons__info-price`);
+          let productCount = document.body.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+          let productPrice = document.body.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+          let infoPrice = document.body.querySelector(`.cart-buttons__info-price`);
 
           productCount.innerHTML = cartItem.count;
 
           productPrice.innerHTML = `€${(cartItem.product.price * cartItem.count).toFixed(2)}`;
 
           infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
-          console.log('length' + this.cartItems.length);
         }
       } else {
         this.modal.close();
@@ -225,7 +222,6 @@ export default class Cart {
       modalTitle.removeChild(modalTitle.childNodes[0]);
       this.modal.setTitle('Success!');
       this.cartItems = [];
-      this.modalBody.removeChild(this.modalBody.childNodes[1]);
       this.modal.setBody(createElement(
         `<div class="modal__body-inner">
               <p>

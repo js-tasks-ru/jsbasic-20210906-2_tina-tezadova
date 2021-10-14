@@ -3,25 +3,24 @@ import ProductCard from '../../6-module/2-task/index.js';
 import products from './products.js';
 
 function ProductGridTemplate() {
-  const result = `<div class="products-grid">
+  return `<div class="products-grid">
   <div class="products-grid__inner">
   </div>
 </div>`;
 
-  return result;
 
 }
 
 export default class ProductGrid {
-  #template = '';
-  #elem = '';
-  #productsFiltred = '';
-  #container = '';
+  #template = null;
+  #elem = null;
+  #productsFiltred = null;
+  #container = null;
   #activeFilters = {
     noNuts: false,
     vegeterianOnly: false,
     maxSpiciness: null,
-    category: ''
+    category: null
   };
   constructor(products) {
     this.products = products;
