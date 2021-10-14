@@ -7,11 +7,9 @@ function ModalTemplate() {
       <button type="button" class="modal__close">
         <img src="/assets/images/icons/cross-icon.svg" alt="close-icon" />
       </button>
-      <h3 class="modal__title">
-      </h3>
+      <h3 class="modal__title"></h3>
     </div>
-    <div class="modal__body">
-    </div>
+    <div class="modal__body"></div>
   </div>
 </div>`;
 
@@ -53,6 +51,11 @@ export default class Modal {
 
   setBody(body) {
     let modalBody = this.#container.querySelector('.modal__body');
+    if (!!modalBody.firstChild) {
+      modalBody.removeChild(modalBody.childNodes[0]);
+      modalBody.append(body);
+      return modalBody;
+    }
     modalBody.append(body);
     return modalBody;
   }
